@@ -10,11 +10,13 @@ bot = telebot.TeleBot('7433564468:AAF2Ha7iH2k_fb4I-0fOGEhTmOj0rwYWvcw')
 @bot.message_handler(commands=['start'])
 def Start(message):
     """ Функция отслеживает комманду /start """
-
+    # Создаем кнопку
     markup =  types.ReplyKeyboardMarkup()
     btn1 = types.KeyboardButton('Поехали')
     markup.row(btn1)
+    # Пишем сообщение которое будет отправлять бот
     mess = f"Привет, {message.from_user.first_name}! Цель этой игры дойти до дома после дня рождения друга, где ты отдыхал и веселился."
+    # Пишем комманду, ктобы бот отправил сообщение пользователю(с кнопокой и текстом)
     bot.send_message(message.chat.id, mess, reply_markup=markup)
 
 
@@ -28,7 +30,9 @@ def Game(message):
 
                                         '''
         bot.send_message(message.chat.id, mess_first_pos)
+        # Шанс пройти 50%
         move_chance = random.randint(1, 2) >= 2
+        # При проигрыше игра начинается заново(с начальной позиции)
         if move_chance == False:
             markup = types.ReplyKeyboardMarkup()
             btn1 = types.KeyboardButton("Поехали")
@@ -37,6 +41,7 @@ def Game(message):
                         😀 * * * * 🏠
                     '''
             bot.send_message(message.chat.id, mess_loose, reply_markup=markup)
+        # При положительном результате переходим на следущую улицу
         if move_chance:
             markup = types.ReplyKeyboardMarkup()
             btn1_win = types.KeyboardButton('Идем дальше')
@@ -57,11 +62,14 @@ def Game(message):
         btn_pickuo_no = types.KeyboardButton('Нет, не буду поднимать 1 предмет')
         markup.row(btn_pickup_yes, btn_pickuo_no)
         bot.send_message(message.chat.id, mess_about_item, reply_markup=markup)
+    # Развитие событий, если игрок согласится поднимать предмет
     if message.text == "Да, поднять 1 предмет":
         items_list = ["Номер Друга", "Боржоми", "Бутылка Пива", "Бутылка водки"]
+        # Рандомно выбираем предмет из списка
         item = random.choice(items_list)
         if item == "Номер Друга":
             bot.send_message(message.chat.id, "Ты нашел номер друга! Он поможет провести тебя через улицу. Твои шансы 60%")
+            # Шанс пройти 60%
             move_chance_friend = random.randint(1, 10) >= 6
             if move_chance_friend == False:
                 markup = types.ReplyKeyboardMarkup()
@@ -84,6 +92,7 @@ def Game(message):
         elif item == "Боржоми":
             bot.send_message(message.chat.id, '''Вау! Ты нашел бутылку Боржоми! Твои шансы пройти улицу 100% 
                                                                     Определнно - ты везунчик!  ''')
+            # Шанс пройти 100%
             move_chance_borjomi = random.randint(1, 100) <= 100
             if move_chance_borjomi:
                 markup = types.ReplyKeyboardMarkup()
@@ -96,6 +105,7 @@ def Game(message):
                 bot.send_message(message.chat.id, mess_win_with_friend_street1, reply_markup=markup)
         elif item == "Бутылка Пива":
             bot.send_message(message.chat.id, "Ты нашел бутылку пива. Ой ой праздник продолжается... Твой шанс пройти улицу равен 40%")
+            # Шанс пройти 40%
             move_chance_pivo = random.randint(1, 10) <= 4
             if move_chance_pivo == False:
                 markup = types.ReplyKeyboardMarkup()
@@ -117,6 +127,7 @@ def Game(message):
                 bot.send_message(message.chat.id, mess_win_with_friend_street1, reply_markup=markup)
         elif item == "Бутылка водки":
             bot.send_message(message.chat.id, "Тебе выпала бутылка водки... Ой ой... Это было зряяя. Твой шанс пройти улицу равен 10%")
+            # Шанс пройти 10%
             move_chance_vodka = random.randint(1, 10) >= 10
             if move_chance_vodka == False:
                 markup = types.ReplyKeyboardMarkup()
@@ -136,6 +147,7 @@ def Game(message):
                     🟢 🟢 😀 * 🏠
                     '''
                 bot.send_message(message.chat.id, mess_win_with_friend_street1, reply_markup=markup)
+    # Развитие событий, если игрок откажется поднимать предмет
     if message.text == "Нет, не буду поднимать 1 предмет":
         move_chance_without_1_item = random.randint(1, 2) >= 2
         if move_chance_without_1_item == False:
