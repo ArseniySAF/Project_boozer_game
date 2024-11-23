@@ -3,7 +3,7 @@ from telebot import types #импортирую модуль для создан
 import random #импорттирую библиотеку для рандомного выбора чисел и предметов
 
 #токен бота
-bot = telebot.TeleBot('7433564468:AAF2Ha7iH2k_fb4I-0fOGEhTmOj0rwYWvcw')
+bot = telebot.TeleBot('******AA******H2k_**********')
 
 
 #Начало работы по кнопке start
